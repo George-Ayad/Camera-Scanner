@@ -75,8 +75,12 @@ for cnt in contours:
 
     if len(approx) == 4:
         paper = approx
+        print(approx)
+        print(width * height)
+
         # arrange detected edges
         paper = arrangePoints(paper)
+        print(paper)
         break
 
 # draw edges on original image
@@ -85,40 +89,46 @@ cv2.circle(image, (paper[1][0], paper[1][1]), 2, (0, 255, 0), 2)
 cv2.circle(image, (paper[2][0], paper[2][1]), 2, (255, 0, 0), 2)
 cv2.circle(image, (paper[3][0], paper[3][1]), 2, (255, 255, 0), 2)
 
-
-# detect width to height ratio and set image size accordingly
-width = getDistance(paper[0][0], paper[0][1], paper[1][0], paper[1][1])
-height = getDistance(paper[0][0], paper[0][1], paper[3][0], paper[3][1])
-
-if width < height:
-    ratio = width/height
-    height = int(args["length"])
-    width = height * ratio
-if height < width:
-    ratio = height/width
-    width = int(args["length"])
-    height = width*ratio
-frame = np.float32([[0, 0], [width, 0], [width, height], [0, height]])
-
-# get perspective transformation matrix
-M = cv2.getPerspectiveTransform(paper, frame)
-# apply matrix to get perspective corrected image
-warped = cv2.warpPerspective(image, M, (int(width), int(height)))
-
-# get grayscale version of warped image
-final = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
-# get image threshold and enhance black
-ret, finalThresh = cv2.threshold(final, 127, 255, 0)
-final = cv2.addWeighted(final, 1-f1/10, finalThresh, f1/10, 0)
-
-# display
-cv2.imshow(args["image"], image)
-cv2.imshow("warped", final)
-
-# save
-cv2.imwrite(args["save"], final)
-
-print(ocr_core(args["save"]))
-
+cv2.imshow("Found Paper", image)
 cv2.waitKey(0)
-cv2.destroyAllWindows()
+if abs(paper[0][0] - paper[1][0]) * abs(paper[0][1] - paper[2][1]) > (height * width / 3) :
+
+    # detect width to height ratio and set image size accordingly
+    width = getDistance(paper[0][0], paper[0][1], paper[1][0], paper[1][1])
+    height = getDistance(paper[0][0], paper[0][1], paper[3][0], paper[3][1])
+
+    if width < height:
+        ratio = width/height
+        height = int(args["length"])
+        width = height * ratio
+    if height < width:
+        ratio = height/width
+        width = int(args["length"])
+        height = width*ratio
+    frame = np.float32([[0, 0], [width, 0], [width, height], [0, height]])
+
+    # get perspective transformation matrix
+    M = cv2.getPerspectiveTransform(paper, frame)
+    # apply matrix to get perspective corrected image
+    warped = cv2.warpPerspective(image, M, (int(width), int(height)))
+
+    # get grayscale version of warped image
+    final = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
+    # get image threshold and enhance black
+    ret, finalThresh = cv2.threshold(final, 127, 255, 0)
+    final = cv2.addWeighted(final, 1-f1/10, finalThresh, f1/10, 0)
+
+    # display
+    cv2.imshow(args["image"], image)
+    cv2.imshow("warped", final)
+
+    # save
+    cv2.imwrite(args["save"], final)
+
+    print(ocr_core(args["save"]))
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+else:
+    print(ocr_core(args["image"]))
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
