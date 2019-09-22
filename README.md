@@ -5,7 +5,7 @@ Command line python script that converts document images to scan-like images bas
 download the script from this repository then :
 ```sh
 $ cd Camera-Scanner
-$ python scanner.py -i "link to image" -e "black enhancement level" -s "link to save output" -l "image maximum side length"
+$ python Scanner.py -i "link to image" -e "black enhancement level" -s "link to save output" -l "image maximum side length"
 ```
 ## Examples
 ### example 1
