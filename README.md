@@ -10,21 +10,21 @@ $ python scanner.py -i "link to image" -e "black enhancement level" -s "link to 
 ## Examples
 ### example 1
 ### original
-![example 1 original](https://pasteboard.co/IyBtBc8.jpg)
+![example 1 original](https://i.ibb.co/7nQ7hDH/test-Image1.jpg)
 ### scanned
-![example 1 scanned](https://pasteboard.co/IyBsFPg.jpg)
+![example 1 scanned](https://i.ibb.co/KFX4TF4/output.jpg)
 >enhancement 5
 
 ### example 2
 ### original
-![example 2 original](https://pasteboard.co/IyBtKV4.jpg)
+![example 2 original](https://i.ibb.co/qjXwTsT/test-Image2.jpg)
 ### scanned
-![example 2 scanned](https://pasteboard.co/IyBtU5U.jpg)
+![example 2 scanned](https://i.ibb.co/4FD3Bs4/output2.jpg)
 >enhancement 3
 
 ### example 3
 ### original
-![example 3 original](https://pasteboard.co/IyBu1Ww.png)
+![example 3 original](https://i.ibb.co/9t5CBdj/test-Image3.png)
 ### scanned
-![example 3 scanned](https://pasteboard.co/IyBu9jD.jpg)
+![example 3 scanned](https://i.ibb.co/Bt4Pqk0/output4.jpg)
 > enhancement 0
