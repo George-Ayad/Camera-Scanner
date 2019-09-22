@@ -2,6 +2,22 @@ import cv2
 import numpy as np
 import argparse
 import math
+try:
+    from PIL import Image
+except ImportError:
+    import Image
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+
+def ocr_core(filename):
+    """
+    This function will handle the core OCR processing of images.
+    """
+    text = pytesseract.image_to_string(Image.open(filename))  # We'll use Pillow's Image class to open the image and pytesseract to detect the string in the image
+    return text
+
+
 
 def getDistance(x1,y1,x2,y2):
     return math.sqrt( pow( abs(x2)-abs(x1) ,2) + pow( abs(y2)-abs(y1) ,2) )
@@ -46,7 +62,7 @@ gray = cv2.GaussianBlur(gray, (9, 9), 1)
 edges = cv2.Canny(gray, 30, 50)
 
 # get contours
-dummy, contours, hierarchy = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+contours, hierarchy = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
 # sort contours
 contours = sorted(contours, key=cv2.contourArea, reverse=True)
@@ -101,6 +117,8 @@ cv2.imshow("warped", final)
 
 # save
 cv2.imwrite(args["save"], final)
+
+print(ocr_core(args["save"]))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
